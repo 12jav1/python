@@ -1,7 +1,3 @@
-# Clase personalizada para gestionar errores relacionados con las habitaciones
-class ErrorRooms(Exception):
-    pass
-
 # Clase Cliente que representa a un cliente del hotel
 class Cliente:
     def __init__(self, name, surname, email):
@@ -22,9 +18,9 @@ class Habitacion:
     def __str__(self):
         status = "❌ Reservada" if self.is_reserved else "✅ Disponible"
         if status == "Reservada":
-            return f"🏨 Habitacion numero: {self.num}. 🛏️ Tipo: {self.type}. Estado: {status}"
+            return f"🏨 Habitacion numero: {self.num}. 🛏️  Tipo: {self.type}. Estado: {status}"
         else:
-            return f"🏨 Habitacion numero: {self.num}. 🛏️ Tipo: {self.type}. Estado: {status}"
+            return f"🏨 Habitacion numero: {self.num}. 🛏️  Tipo: {self.type}. Estado: {status}"
 
 # Clase Hotel que maneja las habitaciones y las reservas
 class Hotel:
@@ -33,7 +29,7 @@ class Hotel:
         self.rooms = {}  # Diccionario para almacenar las habitaciones
         tipos = ["Doble", "Simple", "Suit"]  # Tipos de habitaciones
         tipo_index = 0
-        for i in range(100, 121):  # Creamos habitaciones numeradas del 100 al 120
+        for i in range(100, 111):  # Creamos habitaciones numeradas del 100 al 120
             tipo = tipos[tipo_index]
             self.rooms[i] = Habitacion(i, tipo)  # Añadimos las habitaciones al hotel
             tipo_index = (tipo_index + 1) % len(tipos)
@@ -52,7 +48,7 @@ class Hotel:
                 return f"⚠️ La habitación {num} ya está reservada."
             habitacion.is_reserved = True
             self.reservations.append((habitacion, customer))
-            return f"\n🎉 Habitación {num} reservada con éxito a nombre de {customer.name} {customer.surname} 🏨✨"
+            return f"\n🎉 Habitación {num} reservada con éxito a nombre de {customer.name} {customer.surname}"
         else:
             return "❌ La habitación no existe."
 
@@ -94,7 +90,12 @@ class Interfaz:
                 case 1:
                     name_customer = input("📝 Introduce tu nombre: ").capitalize()
                     surname_customer = input("📝 Introduce tu apellido: ").capitalize()
-                    email_customer = input("📧 Introduce tu email: ").lower()
+                    while True:
+                        email_customer = input("📧 Introduce tu email: ").lowe ()
+                        if ("@" in email_customer) and ("." in email_customer):
+                            break
+                        else:
+                            print("Formato de correo invalido")
                     customer = Cliente(name_customer, surname_customer, email_customer)
 
                     while True:
