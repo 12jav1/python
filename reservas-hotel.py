@@ -37,8 +37,8 @@ class Hotel:
 
     # Muestra todas las habitaciones del hotel
     def show_rooms(self):
-        habitaciones_info = [str(room) for room in self.rooms.values()]
-        return "\n".join(habitaciones_info)
+        for room in self.rooms.values():
+            print(room)
 
     # Reserva una habitación
     def book_room(self, num, customer):
