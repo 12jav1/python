@@ -1,5 +1,5 @@
 # Clase Cliente que representa a un cliente del hotel
-class Cliente:
+class Customer:
     def __init__(self, name, surname, email):
         self.name = name
         self.surname = surname
@@ -9,7 +9,7 @@ class Cliente:
         return f"🧑 Nombre: {self.name} {self.surname} 📧 Correo: {self.email}"
 
 # Clase Habitacion que representa una habitación en el hotel
-class Habitacion:
+class Room:
     def __init__(self, num, type):
         self.num = num
         self.type = type
@@ -31,40 +31,40 @@ class Hotel:
         tipo_index = 0
         for i in range(100, 111):  # Creamos habitaciones numeradas del 100 al 120
             tipo = tipos[tipo_index]
-            self.rooms[i] = Habitacion(i, tipo)  # Añadimos las habitaciones al hotel
+            self.rooms[i] = Room(i, tipo)  # Añadimos las habitaciones al hotel
             tipo_index = (tipo_index + 1) % len(tipos)
         self.reservations = []  # Lista para almacenar las reservas
 
     # Muestra todas las habitaciones del hotel
-    def mostrar_habitaciones(self):
+    def show_rooms(self):
         habitaciones_info = [str(room) for room in self.rooms.values()]
         return "\n".join(habitaciones_info)
 
     # Reserva una habitación
-    def reservar_habitacion(self, num, customer):
+    def book_room(self, num, customer):
         if num in self.rooms:
-            habitacion = self.rooms[num]
-            if habitacion.is_reserved:
+            room = self.rooms[num]
+            if room.is_reserved:
                 return f"⚠️ La habitación {num} ya está reservada."
-            habitacion.is_reserved = True
-            self.reservations.append((habitacion, customer))
+            room.is_reserved = True
+            self.reservations.append((room, customer))
             return f"\n🎉 Habitación {num} reservada con éxito a nombre de {customer.name} {customer.surname}"
         else:
             return "❌ La habitación no existe."
 
     # Cancela una reserva
-    def cancelar_reserva(self, num):
+    def cancel_reservation(self, num):
         if num in self.rooms:
-            habitacion = self.rooms[num]
-            if habitacion.is_reserved:
-                habitacion.is_reserved = False
+            room = self.rooms[num]
+            if room.is_reserved:
+                room.is_reserved = False
                 return f"✅ Habitación {num} cancelada con éxito."
             return f"ℹ️ Esta habitacion no ha sido reservada."
         else:
             return "❌ La habitación no existe."
 
 # Clase Interfaz que maneja la interacción con el usuario
-class Interfaz:
+class Interface:
     def __init__(self, hotel):
         self.hotel = hotel
 
@@ -91,12 +91,12 @@ class Interfaz:
                     name_customer = input("📝 Introduce tu nombre: ").capitalize()
                     surname_customer = input("📝 Introduce tu apellido: ").capitalize()
                     while True:
-                        email_customer = input("📧 Introduce tu email: ").lowe ()
+                        email_customer = input("📧 Introduce tu email: ").lower()
                         if ("@" in email_customer) and ("." in email_customer):
                             break
                         else:
                             print("Formato de correo invalido")
-                    customer = Cliente(name_customer, surname_customer, email_customer)
+                    customer = Customer(name_customer, surname_customer, email_customer)
 
                     while True:
                         try:
@@ -105,11 +105,11 @@ class Interfaz:
                         except ValueError:
                             print("⚠️ Error: Introduce un número válido para la habitación.")
 
-                    print(self.hotel.reservar_habitacion(num, customer))
+                    print(self.hotel.book_room(num, customer))
 
                 case 2:
                     print("\n📋 Estado actual de las habitaciones:")
-                    print(self.hotel.mostrar_habitaciones())
+                    print(self.hotel.show_rooms())
 
                 case 3:
                     while True:
@@ -119,12 +119,12 @@ class Interfaz:
                         except ValueError:
                             print("⚠️ Error: Introduce un número válido para la habitación.")
 
-                    print(self.hotel.cancelar_reserva(num))
+                    print(self.hotel.cancel_reservation(num))
 
                 case _:
                     print("⚠️ Opción no válida. Intenta de nuevo.")
 
 # Iniciamos el hotel y el menú
 hotel = Hotel("Hotel")
-menu = Interfaz(hotel)
+menu = Interface(hotel)
 menu.menu()
